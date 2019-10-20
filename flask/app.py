@@ -9,7 +9,6 @@ import uuid
 
 app = Flask(__name__)
 
-
 @app.route('/')
 @app.route('/<name>')
 def hello(name=None):
@@ -33,8 +32,21 @@ def fractal():
 def page_not_found(e):
     return render_template('404.html'), 404
 
-# Función que pinta en una ventana y salva en formato PNG el fractal de Mandelbrot. Nota: iteraciones tiene que ser menor que 1000
-def pintaMandelbrot(x1, y1, x2, y2, ancho, iteraciones, nombreFichero):
+def pintaMandelbrot(x1, y1, x2, y2, ancho, iteraciones, nombre_fichero):
+    """Función que pinta en una ventana y guarda en formato PNG el fractal de 
+    Mandelbrot.
+
+    Parámetros:
+    x1 -- Coordenada x de la posición inicial
+    y1 -- Coordenada y de la posición inicial
+    x2 -- Coordenada x de la posición final
+    y2 -- Coordenada y de la posición final
+    ancho -- Anchura de la imagen
+    iteraciones -- Número de iteraciones
+    nombre_ficher -- Nombre del fichero en el que se va a guardar la imagen
+    
+    Nota: iteraciones tiene que ser un valor menor que 1000.
+    """
     xa = x1
     xb = x2
     ya = y1
@@ -65,4 +77,4 @@ def pintaMandelbrot(x1, y1, x2, y2, ancho, iteraciones, nombreFichero):
 
             im.putpixel((x, y), col)
 
-    im.save('./static/' + nombreFichero, 'PNG')  # Grabamos en formato PPM
+    im.save('./static/' + nombre_fichero, 'PNG')  # Grabamos en formato PPM
