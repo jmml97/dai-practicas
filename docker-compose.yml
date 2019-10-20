@@ -1,0 +1,19 @@
+# docker-compose.yml
+
+version: '3.7'
+
+services:
+  ejercicios:
+    image: python:3.7
+    volumes:
+      - ./ejer:/ejer
+    working_dir: /ejer
+  flask:
+    build: 
+      context: .
+      dockerfile: DockerfileFlask
+    ports:
+      - "8080:5000"
+    volumes:
+      - ./flask:/flask
+    working_dir: /flask

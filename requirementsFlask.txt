@@ -1,0 +1,4 @@
+# requirementFlask.txt
+
+Pillow 
+Flask
