@@ -9,13 +9,13 @@ import uuid
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/<name>')
+@app.route('/p2/')
+@app.route('/p2/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
 
-# http://127.0.0.1:8080/fractal?x1=-2.0&x2=1.0&y1=-1.5&y2=1.5&ancho=300
-@app.route('/fractal')
+# http://127.0.0.1:8080/p2/fractal?x1=-2.0&x2=1.0&y1=-1.5&y2=1.5&ancho=300
+@app.route('/p2/fractal')
 def fractal():
     x1 = request.args.get('x1')
     x2 = request.args.get('x2')
