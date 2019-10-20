@@ -1,4 +1,7 @@
-# ./flask/app.py
+# archivo:    flask/app.py
+# asignatura: Desarrollo de Aplicaciones para Internet
+# práctica:   Prácticas 2, 3
+# autor:      José María Martín Luque
 
 from flask import Flask
 from flask import render_template
