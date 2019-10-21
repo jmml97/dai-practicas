@@ -12,6 +12,10 @@ import uuid
 
 app = Flask(__name__)
 
+@app.route('/p3/')
+def p3(name=None):
+    return render_template('index.html')
+
 @app.route('/p2/')
 @app.route('/p2/<name>')
 def hello(name=None):
