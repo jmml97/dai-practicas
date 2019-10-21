@@ -1,7 +1,9 @@
 <!doctype html>
 <head>
+  {% block head %}
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='spectre.min.css')}}">
-  <title>Práctica 3</title>
+  <title>Práctica 3 - {% block title %}{% endblock %}</title>
+  {% endblock %}
 </head>
 <br>
 <body class="container grid-lg">
@@ -23,8 +25,10 @@
   <div class="columns">
     <nav class="sidebar-l column col-3"></nav>
     <main class="column col-9">
-      <h1>Hola</h1>
+      {% block content %}{% endblock %}
     </main>
   </div>
-  <footer</footer>
+  <footer>
+    <p>© José María Martín Luque</p>
+  </footer>
 </body>

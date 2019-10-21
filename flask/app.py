@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 @app.route('/p3/')
 def p3(name=None):
-    return render_template('index.html')
+    return render_template('p3.html')
 
 @app.route('/p2/')
 @app.route('/p2/<name>')
