@@ -4,5 +4,12 @@
   <h1>Hola</h1>
   <p class="important">
     Welcome to my awesome homepage.
+  </p>
+
+  {% if not session['email'] %}
+
+  <p>Regístrate o incia sesión.</p>
+    
+  {% endif %}
     {{login}}
 {% endblock %}
