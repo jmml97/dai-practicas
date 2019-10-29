@@ -1,11 +1,9 @@
 # archivo:    flask/app.py
 # asignatura: Desarrollo de Aplicaciones para Internet
-# práctica:   Prácticas 2, 3
+# práctica:   Prácticas 2, 3, 4
 # autor:      José María Martín Luque
 
-from flask import Flask
-from flask import render_template
-from flask import request
+from flask import Flask, render_template, request, redirect, session, url_for
 
 from pickleshare import *
 
@@ -17,10 +15,13 @@ from PIL import Image
 import uuid
 
 app = Flask(__name__)
+
+app.secret_key = "59d112cd063f89a074903d667117316774255a59f582e724"
+
 db = PickleShareDB('./p3db')
 
 @app.route('/p3/')
-def p3(login=None):
+def p3():
     return render_template('p3.html')
 
 @app.route('/p3/signup/', methods=['GET', 'POST'])
@@ -46,34 +47,42 @@ def p3_signup():
     else:
         return render_template('signup.html')
 
-@app.route('/p3/login/', methods=['POST'])
+@app.route('/p3/login/', methods=['POST', 'GET'])
 def p3_login():
     
-    email = request.form['email']
-    password = request.form['password']
+    if request.method == 'POST':
 
-    try:
-        stored_password = db[email]['password']
+        email = request.form['email']
+        password = request.form['password']
 
+        try:
+            stored_password = db[email]['password']
 
-        stored_salt = stored_password[:32]
-        stored_key = stored_password[32:]
+            stored_salt = stored_password[:32]
+            stored_key = stored_password[32:]
 
-        input_key = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),  # Convert the password to bytes
-            stored_salt,
-            100000
-        )
+            input_key = hashlib.pbkdf2_hmac(
+                'sha256',
+                password.encode('utf-8'),  # Convert the password to bytes
+                stored_salt,
+                100000
+            )
 
-        if input_key == stored_key:
-            return render_template('p3.html', login="Sesión inciada")
-        else:
-            return render_template('p3.html', login="Contraseña incorrecta")
+            if input_key == stored_key:
+                session['email'] = email
+                return redirect(url_for('p3'))
+            else:
+                return render_template('login.html', error="Contraseña incorrecta")
+            
+        except KeyError: 
+            return render_template('login.html', error="Usuario incorrecto")
+    else:
+        return render_template('login.html')
 
-        
-    except KeyError: 
-        return render_template('p3.html', login="Usuario incorrecto")
+@app.route('/p3/logout/', methods=['GET'])
+def p3_logout():
+    session['email'] = ''
+    return redirect(url_for('p3'))
 
 @app.route('/p2/')
 @app.route('/p2/<name>')
