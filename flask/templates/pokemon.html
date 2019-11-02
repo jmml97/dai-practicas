@@ -7,8 +7,8 @@
 <div class="search columns">
 
   {% for pokemon in results %}
-    <div class="column col-6 col-xs-12">
-      <div class="card">
+    <div class="column col-4 col-xs-12">
+      <div class="pokemon card">
         <div class="card-image">
           <img src="{{ pokemon.img }}" class="pokemon-image img-responsive">
         </div>
@@ -17,8 +17,21 @@
           <div class="card-subtitle text-gray">Nº {{ pokemon.num }}</div>
         </div>
         <div class="card-body">
-          <p>Altura: {{ pokemon.height }}, peso: {{ pokemon.weight }}</p>
-          <p>Tipos: {% for type in pokemon.type %} {{ type }} {% endfor %} </p>
+          <p>{% for type in pokemon.type %} <span class="label label-rounded">{{ type }}</span> {% endfor %}</p>
+          <table>
+            <thead>
+              <tr>
+                <th class="text-left">Altura</th>
+                <th class="text-left">Peso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ pokemon.height }}</td>
+                <td>{{ pokemon.weight }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
