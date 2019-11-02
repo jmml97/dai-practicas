@@ -42,7 +42,14 @@
       </ul>
         
       {% else %}
-      <p>Tienes que iniciar sesión para ver las páginas recientes</p>
+      <div class="empty">
+        <div class="empty-icon">
+          <i class="icon icon-3x icon-time"></i>
+        </div>
+        <p class="empty-title h5">No hay páginas recientes</p>
+        <p class="empty-subtitle">Inicia sesión para registrarlas</p>
+        <div class="empty-action"><a class="btn btn-primary" href="{{ url_for('p3_login') }}">Inicia sesión</a></div>
+      </div>
       {% endif %}
     </nav>
     <main class="column col-9 col-sm-12">
