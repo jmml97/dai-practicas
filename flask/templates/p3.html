@@ -1,15 +1,19 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1>Hola</h1>
-  <p class="important">
-    Bienvenido a la página de inicio de las prácticas de DAI en Flask.
-  </p>
+  <div class="hero hero-sm bg-white">
+    <div class="hero-body">
+      <h1>¡Hola!</h1>
+      <p>Bienvenido a la página de inicio de las prácticas de DAI en Flask.</p>
 
-  {% if not session['email'] %}
+      {% if not session['email'] %}
 
-  <p><a href="{{ url_for('p3_signup') }}">Regístrate</a> o <a href="{{ url_for('p3_login') }}">incia sesión</a>.</p>
-    
-  {% endif %}
-    {{login}}
+      <p>Disfruta de todas las funciones iniciando sesión.</p>
+      <a href="{{ url_for('p3_signup') }}" class="btn btn-primary">Regístrate</a>
+      <a href="{{ url_for('p3_login') }}" class="btn">Inicia sesión</a>
+
+      {% endif %}
+    </div>
+  </div>
+  
 {% endblock %}
