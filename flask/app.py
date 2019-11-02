@@ -65,26 +65,33 @@ def p3():
     save_recent_pages(request.url, 'Inicio')
     return render_template('p3.html')
 
+@app.route('/p3/profile/edit-email/', methods=['POST'])
+def p3_edit_email():
+    current_email = session['email']
+    new_email = request.form['email']
+
+    stored_password = db_users[current_email]['password']
+    db_users[new_email] = {'password': stored_password}
+
+    session['email'] = new_email
+    del db_users[current_email]
+
+    return redirect(url_for('p3_profile'))
+
+@app.route('/p3/profile/edit-password/', methods=['POST'])
+def p3_edit_password():
+    update_user_profile(session['email'], request.form['password'])
+    return redirect(url_for('p3_profile'))
+
+@app.route('/p3/profile/')
+def p3_profile():
+    return render_template('profile.html')
+
 @app.route('/p3/signup/', methods=['GET', 'POST'])
 def p3_signup():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        salt = os.urandom(32)
-
-        key = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            salt,
-            100000
-        )
-
-        salted_password = salt + key
-
-        db_users[email] = {'password': salted_password}
-
-        return render_template('welcome.html', email=email)
+        update_user_profile(request.form['email'], request.form['password'])
+        return render_template('welcome.html', email=request.form['email'])
     else:
         return render_template('signup.html')
 
@@ -168,6 +175,20 @@ def save_recent_pages(url, title):
         if (len(session['recent_pages']) > 3):
             session['recent_pages'].pop(0)
         session.modified = True
+
+def update_user_profile(email, password):
+    salt = os.urandom(32)
+
+    key = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        salt,
+        100000
+    )
+
+    salted_password = salt + key
+
+    db_users[email] = {'password': salted_password}
 
 def pintaMandelbrot(x1, y1, x2, y2, ancho, iteraciones, nombre_fichero):
     """Función que pinta en una ventana y guarda en formato PNG el fractal de 

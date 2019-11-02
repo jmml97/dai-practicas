@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Mi perfil</h1>
+  <p>Tu correo electrónico actual es <samp>{{ session['email'] }}</samp>. Aquí puedes cambiar tu correo y contraseña.</p>
+
+  <h2>Cambia tu contraseña</h2>
+
+  <form class="form-horizontal" method="POST" action="/p3/profile/edit-password/">
+    <div class="form-group">
+      <div class="col-4 col-sm-12">
+        <label class="form-label" for="input-password">Nueva contraseña</label>
+      </div>
+      <div class="col-8 col-sm-12">
+        <input class="form-input" type="password" id="input-password" placeholder="Nueva contraseña" name="password">
+      </div>
+    </div>
+    <button class="btn btn-primary">Cambia mi contraseña</button>
+    <!-- form structure -->
+  </form>
+
+  <br>
+  <h2>Cambia tu correo</h2>
+
+  <form class="form-horizontal" method="POST" action="/p3/profile/edit-email/">
+    <div class="form-group">
+      <div class="col-4 col-sm-12">
+        <label class="form-label" for="input-email">Nuevo correo electrónico</label>
+      </div>
+      <div class="col-8 col-sm-12">
+        <input class="form-input" type="email" id="input-email" placeholder="Nuevo correo electrónico" name="email">
+      </div>
+    </div>
+    <button class="btn btn-primary">Cambia mi correo</button>
+  </form>
+{% endblock %}

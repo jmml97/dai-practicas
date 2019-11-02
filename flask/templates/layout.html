@@ -32,7 +32,14 @@
   <div class="columns">
     <nav class="sidebar-l column col-3 col-sm-12">
       {% if session['email'] %}
-      <p class="h4">Páginas recientes</p>
+      <span class="h4">Menú</span>
+      <ul class="nav">
+          <li class="nav-item">
+              <a href="{{ url_for('p3_profile') }}">Mis datos</a>
+          </li>
+      </ul>
+      <div class="divider"></div>
+      <span class="h4">Páginas recientes</span>
       <ul class="nav recent-pages">
         {% for page in session['recent_pages'] %}
         <li class="nav-item">
