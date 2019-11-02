@@ -10,8 +10,10 @@
     </div>
   </form>
 
-  {% block search %}
-
-  {% endblock %}
+  {% if error %}
+    <p>{{ error }}</p>
+  {% else %}
+    {% block search %}{% endblock %}
+  {% endif %}
 
 {% endblock %}

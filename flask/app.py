@@ -34,7 +34,10 @@ def search_pokemon():
 
         results = db_data.samples_pokemon.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
 
-        return render_template('pokemon.html', busqueda='Pokémon', results=results)
+        if (results.count() == 0):
+            return render_template('pokemon.html', busqueda='Pokémon', results=results, error='No se han encontrado resultados')
+        else:
+            return render_template('pokemon.html', busqueda='Pokémon', results=results)
 
     else:
         save_recent_pages(request.url, 'Pokémon')
@@ -48,7 +51,10 @@ def search_friends():
 
         results = db_data.samples_friends.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
 
-        return render_template('friends.html', busqueda='Episodios de Friends',results=results)
+        if (results.count() == 0):
+            return render_template('friends.html', busqueda='Episodios de Friends', results=results, error='No se han encontrado resultados')
+        else:
+            return render_template('friends.html', busqueda='Episodios de Friends',results=results)
 
     else:
         save_recent_pages(request.url, 'Friends')
