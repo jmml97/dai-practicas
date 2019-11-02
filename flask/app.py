@@ -12,6 +12,9 @@ import hashlib
 import os
 
 from PIL import Image
+
+from pymongo import MongoClient
+
 import uuid
 
 app = Flask(__name__)
@@ -19,6 +22,28 @@ app = Flask(__name__)
 app.secret_key = "59d112cd063f89a074903d667117316774255a59f582e724"
 
 db = PickleShareDB('./p3db')
+
+client = MongoClient("mongo", 27017) # Conectar al servicio (docker) "mongo" en su puerto estandar
+db = client.SampleCollections        # Elegimos la base de datos de ejemplo
+
+@app.route('/p4/busqueda/', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form['query']
+        query_regex = '.*' + query + '.*'
+
+        results = db.samples_friends.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
+
+        return render_template('search.html', results=results)
+
+    else:
+        return render_template('search.html', results=[])
+
+@app.route('/p4/mongo')
+def mongo():
+    val = db.samples_friends.find()  # Encontramos los documentos de la coleccion "samples_friends"
+
+    return val[0]['name']
 
 @app.route('/p3/')
 def p3():
