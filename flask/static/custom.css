@@ -1,0 +1,12 @@
+.search .column {
+  padding: .4rem;
+}
+
+.search .card {
+  border: 0;
+  box-shadow: 0 .25rem 1rem rgba(48, 55, 66, .15);
+}
+
+.card .pokemon-image {
+  padding: .4rem;
+}
