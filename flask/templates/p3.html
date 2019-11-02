@@ -3,12 +3,12 @@
 {% block content %}
   <h1>Hola</h1>
   <p class="important">
-    Welcome to my awesome homepage.
+    Bienvenido a la página de inicio de las prácticas de DAI en Flask.
   </p>
 
   {% if not session['email'] %}
 
-  <p>Regístrate o incia sesión.</p>
+  <p><a href="{{ url_for('p3_signup') }}">Regístrate</a> o <a href="{{ url_for('p3_login') }}">incia sesión</a>.</p>
     
   {% endif %}
     {{login}}
