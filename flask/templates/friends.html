@@ -1,0 +1,14 @@
+{% extends "search.html" %}
+
+{% block title %} Friends {% endblock %}
+
+{% block search %}
+
+  {% for result in results %}
+  <h3><a href="{{ result.url }}">{{ result.name }}</a></h3>
+  <img src="{{ result.image.original }}" alt="">
+  {{ result.summary|safe }}
+  <hr>
+  {% endfor %}
+
+{% endblock %}
