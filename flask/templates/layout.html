@@ -11,10 +11,10 @@
 <body class="container grid-lg">
   <header class="navbar">
     <section class="navbar-section">
-      <a href="{{ url_for('p3') }}" class="navbar-brand mr-2">DAI - Prácticas</a>
+      <a href="{{ url_for('p3') }}" class="navbar-brand mr-2">DAI</a>
       <a href="{{ url_for('search_friends') }}" class="btn btn-link">Friends</a>
       <a href="{{ url_for('search_pokemon') }}" class="btn btn-link">Pokémon</a>
-      <a href="{{ url_for('fractal', x1=-2.0, x2=1.0, y1=-1.5, y2=1.5, ancho=300) }}" class="btn btn-link">Fractal de ejemplo</a>
+      <a href="{{ url_for('fractal', x1=-2.0, x2=1.0, y1=-1.5, y2=1.5, ancho=300) }}" class="btn btn-link">Un fractal</a>
     </section>
     <section class="navbar-section">
       {% if session['email'] %}
@@ -30,10 +30,10 @@
   </header>
   <br>
   <div class="columns">
-    <nav class="sidebar-l column col-3">
+    <nav class="sidebar-l column col-3 col-sm-12">
       {% if session['email'] %}
       <p class="h4">Páginas recientes</p>
-      <ul class="nav">
+      <ul class="nav recent-pages">
         {% for page in session['recent_pages'] %}
         <li class="nav-item">
             <a href="{{ page[0] }}">{{ page[1] }}</a>
@@ -45,7 +45,7 @@
       <p>Tienes que iniciar sesión para ver las páginas recientes</p>
       {% endif %}
     </nav>
-    <main class="column col-9">
+    <main class="column col-9 col-sm-12">
       {% block content %}{% endblock %}
     </main>
   </div>
