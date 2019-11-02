@@ -32,6 +32,9 @@
     <nav class="sidebar-l column col-3">
       {% if session['email'] %}
       <h4>Páginas recientes</h4>
+        {% for page in session['recent_pages'] %}
+        <p><a href="{{ page[0] }}">{{ page[1] }}</a></p>
+        {% endfor %}
       {% else %}
       <p>Tienes que iniciar sesión para ver las páginas recientes</p>
       {% endif %}
