@@ -21,29 +21,36 @@ app = Flask(__name__)
 
 app.secret_key = "59d112cd063f89a074903d667117316774255a59f582e724"
 
-db = PickleShareDB('./p3db')
+db_users = PickleShareDB('./p3db')
 
 client = MongoClient("mongo", 27017) # Conectar al servicio (docker) "mongo" en su puerto estandar
-db = client.SampleCollections        # Elegimos la base de datos de ejemplo
+db_data = client.SampleCollections        # Elegimos la base de datos de ejemplo
 
-@app.route('/p4/busqueda/', methods=['GET', 'POST'])
-def search():
+@app.route('/p4/pokemon/', methods=['GET', 'POST'])
+def search_pokemon():
     if request.method == 'POST':
         query = request.form['query']
         query_regex = '.*' + query + '.*'
 
-        results = db.samples_friends.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
+        results = db_data.samples_pokemon.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
 
-        return render_template('search.html', results=results)
+        return render_template('pokemon.html', busqueda='Pokémon', results=results)
 
     else:
-        return render_template('search.html', results=[])
+        return render_template('pokemon.html', busqueda='Pokémon', results=[])
 
-@app.route('/p4/mongo')
-def mongo():
-    val = db.samples_friends.find()  # Encontramos los documentos de la coleccion "samples_friends"
+@app.route('/p4/friends/', methods=['GET', 'POST'])
+def search_friends():
+    if request.method == 'POST':
+        query = request.form['query']
+        query_regex = '.*' + query + '.*'
 
-    return val[0]['name']
+        results = db_data.samples_friends.find({'name' : {'$regex' : query_regex, '$options' : 'i'}})
+
+        return render_template('friends.html', busqueda='Episodios de Friends',results=results)
+
+    else:
+        return render_template('friends.html', busqueda='Episodios de Friends', results=[])
 
 @app.route('/p3/')
 def p3():
@@ -66,7 +73,7 @@ def p3_signup():
 
         salted_password = salt + key
 
-        db[email] = {'password': salted_password}
+        db_users[email] = {'password': salted_password}
 
         return render_template('welcome.html', email=email)
     else:
@@ -81,7 +88,7 @@ def p3_login():
         password = request.form['password']
 
         try:
-            stored_password = db[email]['password']
+            stored_password = db_users[email]['password']
 
             stored_salt = stored_password[:32]
             stored_key = stored_password[32:]
