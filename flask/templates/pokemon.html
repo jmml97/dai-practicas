@@ -2,9 +2,10 @@
 
 {% block title %} Pokémon {% endblock %}
 
-{% block search %}
+{% block search_results %}
 
 <div class="search columns">
+
   {% for pokemon in results %}
     <div class="column col-6 col-xs-12">
       <div class="card">
@@ -22,6 +23,7 @@
       </div>
     </div>
   {% endfor %}
+  
 </div>
 
   
