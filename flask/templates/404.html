@@ -1,9 +1,10 @@
-<!doctype html>
+{% extends "layout.html" %}
 
-<head>
-  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='spectre.min.css')}}">
-</head>
+{% block title %} No encontrado {% endblock %}
 
-<title>Not found</title>
-<h1>404: Not found</h1>
+{% block content %}
+
+<h1>Error 404: no encontrado</h1>
 <img width=400 src="{{url_for('static', filename='cat404.jpeg')}}"></img>
+
+{% endblock %}
