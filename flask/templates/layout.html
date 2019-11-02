@@ -3,16 +3,17 @@
   {% block head %}
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='spectre.min.css')}}">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='icons.min.css')}}">
-  <title>Práctica 3 - {% block title %}{% endblock %}</title>
+  <title>DAI - {% block title %}{% endblock %}</title>
   {% endblock %}
 </head>
 <br>
 <body class="container grid-lg">
   <header class="navbar">
     <section class="navbar-section">
-      <a href="{{ url_for('p3') }}" class="navbar-brand mr-2">Práctica 3</a>
-      <a href="..." class="btn btn-link">Docs</a>
-      <a href="..." class="btn btn-link">GitHub</a>
+      <a href="{{ url_for('p3') }}" class="navbar-brand mr-2">DAI - Prácticas</a>
+      <a href="{{ url_for('search_friends') }}" class="btn btn-link">Friends</a>
+      <a href="{{ url_for('search_pokemon') }}" class="btn btn-link">Pokémon</a>
+      <a href="{{ url_for('fractal', x1=-2.0, x2=1.0, y1=-1.5, y2=1.5, ancho=300) }}" class="btn btn-link">Fractal de ejemplo</a>
     </section>
     <section class="navbar-section">
       {% if session['email'] %}
@@ -28,7 +29,13 @@
   </header>
   <br>
   <div class="columns">
-    <nav class="sidebar-l column col-3"></nav>
+    <nav class="sidebar-l column col-3">
+      {% if session['email'] %}
+      <h4>Páginas recientes</h4>
+      {% else %}
+      <p>Tienes que iniciar sesión para ver las páginas recientes</p>
+      {% endif %}
+    </nav>
     <main class="column col-9">
       {% block content %}{% endblock %}
     </main>
