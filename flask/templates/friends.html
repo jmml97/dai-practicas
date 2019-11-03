@@ -15,6 +15,21 @@
           <div class="card-title h5"><a href="{{ episode.url }}">{{ episode.name }}</a></div>
         </div>
         <div class="card-body">
+          <table>
+            <tr>
+              <th class="text-left">Temporada</th>
+              <td class="text-right">{{ episode.season|int }}</th>
+            </tr>
+            <tr>
+              <th class="text-left">Episodio</th>
+              <td class="text-right">{{ episode.number|int }}</th>
+            </tr>
+            <tr>
+              <th class="text-left">Fecha</th>
+              <td class="text-right">{{ episode.airdate }}</th>
+            </tr>
+          </table>
+          <div class="divider"></div>
           {% if episode.summary %}
             {{ episode.summary|safe }}
           {% else %}
