@@ -5,26 +5,33 @@
 
 from flask import Flask, render_template, request, redirect, session, url_for
 
+# Bases de datos
 from pickleshare import *
+from pymongo import MongoClient
 
 # Para hacer hasing de las contraseñas
 import hashlib
 import os
 
+# Para generar los fractales
 from PIL import Image
-
-from pymongo import MongoClient
 
 import uuid
 
 app = Flask(__name__)
 
+# Clave para firmar las sesiones
 app.secret_key = "59d112cd063f89a074903d667117316774255a59f582e724"
 
 db_users = PickleShareDB('./p3db')
 
-client = MongoClient("mongo", 27017) # Conectar al servicio (docker) "mongo" en su puerto estandar
-db_data = client.SampleCollections        # Elegimos la base de datos de ejemplo
+# Conectar al servicio (docker) 'mongo' en su puerto estandar
+client = MongoClient("mongo", 27017)  
+db_data = client.SampleCollections
+
+"""-----------------------------------------------------------------------------
+Práctica 4
+-----------------------------------------------------------------------------"""
 
 @app.route('/p4/pokemon/', methods=['GET', 'POST'])
 def search_pokemon():
@@ -38,7 +45,6 @@ def search_pokemon():
             return render_template('pokemon.html', busqueda='Pokémon', results=results, error='No se han encontrado resultados')
         else:
             return render_template('pokemon.html', busqueda='Pokémon', results=results)
-
     else:
         save_recent_pages(request.url, 'Pokémon')
         return render_template('pokemon.html', busqueda='Pokémon', results=[])
@@ -55,10 +61,13 @@ def search_friends():
             return render_template('friends.html', busqueda='Episodios de Friends', results=results, error='No se han encontrado resultados')
         else:
             return render_template('friends.html', busqueda='Episodios de Friends',results=results)
-
     else:
         save_recent_pages(request.url, 'Friends')
         return render_template('friends.html', busqueda='Episodios de Friends', results=[])
+
+"""-----------------------------------------------------------------------------
+Práctica 3
+-----------------------------------------------------------------------------"""
 
 @app.route('/p3/')
 def p3():
@@ -134,6 +143,10 @@ def p3_logout():
     session['email'] = ''
     return redirect(url_for('p3'))
 
+"""-----------------------------------------------------------------------------
+Práctica 2
+-----------------------------------------------------------------------------"""
+
 @app.route('/p2/')
 @app.route('/p2/<name>')
 def hello(name=None):
@@ -159,15 +172,9 @@ def fractal():
 def page_not_found(e):
     return render_template('404.html'), 404
 
-# @app.after_request
-# def save_recent_pages_request(response):
-#     if (session['email']):
-#         session['recent_pages'].append(request.url)
-#         if (len(session['recent_pages']) > 3):
-#             session['recent_pages'].pop(0)
-#         session.modified = True
-
-#     return response
+"""-----------------------------------------------------------------------------
+Funciones auxiliares
+-----------------------------------------------------------------------------"""
 
 def save_recent_pages(url, title):
     if (session['email']):
