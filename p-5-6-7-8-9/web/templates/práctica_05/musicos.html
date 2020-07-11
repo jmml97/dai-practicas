@@ -1,0 +1,115 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block content %}
+<div class="columns mt-2">
+  <div class="column col-2 col-xs-12"><h2 class="">Músicos</h2></div>
+  {% if user.is_authenticated %}
+  <div class="column col-10 col-xs-12"><a class="btn ml-1" href="{% url 'musico_nuevo' %}">Añadir un músico</a></div>
+  {% endif %}
+  
+  <div class="column col-12" id="tabla-musicos">
+  </div>
+  
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a id="link-anterior" href="javascript:void(0);" data-page="1">Anterior</a>
+    </li>
+
+    <li class="page-item">
+      <span id="pagina-de"></span>
+    </li>
+    
+    <li class="page-item">
+      <a id="link-siguiente" href="javascript:void(0);" data-page="2">Siguiente</a>
+    </li>  
+  </ul>
+</div>
+{% endblock %}
+
+{% block script %}
+
+function Visualiza_datos(musicos) {
+  // console.log(musicos)
+  $('#tabla-musicos').html(musicos.musicos_html);
+  $('#pagina-de').html('Página ' + musicos.page + ' de ' + musicos.num_pages);
+};
+
+  $(function () {
+    // de  jquery, se ejecuta cuando se carga la página
+    $.ajax({
+      url: "{% url 'musico_datos' %}",
+      type: 'get',
+      data: {
+        pagina: 1,
+      },
+      success: function (musicos) {
+        Visualiza_datos(musicos);
+      },
+      failure: function (musicos) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+
+  $('#link-siguiente').on('click', function() {
+    var link = $(this);
+    var link_anterior = $('#link-anterior')
+    var page = link.data('page');
+    $.ajax({
+      url: "{% url 'grupo_datos' %}",
+      type: 'get',
+      data: {
+        'pagina': page,
+      },
+      success: function(musicos) {
+
+        link_anterior.data('page', page-1)
+
+        if (link_anterior.parent().hasClass('disabled')) {
+          link_anterior.parent().removeClass('disabled');
+        }
+
+        if (musicos.has_next) {
+            link.data('page', page+1);
+        } else {
+          link.parent().addClass('disabled');
+        }
+        Visualiza_datos(musicos);
+      },
+      failure: function (musicos) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+
+  $('#link-anterior').on('click', function() {
+    var link = $(this);
+    var link_siguiente = $('#link-siguiente')
+    var page = link.data('page');
+    $.ajax({
+      url: "{% url 'grupo_datos' %}",
+      type: 'get',
+      data: {
+        'pagina': page,
+      },
+      success: function(musicos) {
+
+        link_siguiente.data('page', page+1)
+
+        if (link_siguiente.parent().hasClass('disabled')) {
+          link_siguiente.parent().removeClass('disabled');
+        }
+
+        if (musicos.has_previous) {
+          link.data('page', page-1);
+        } else {
+          link.parent().addClass('disabled');
+        }
+        Visualiza_datos(musicos);
+      },
+      failure: function (musicos) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+{% endblock %}

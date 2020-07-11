@@ -1,0 +1,6 @@
+Django>=2.2,<3.0
+django-allauth
+djangorestframework
+gunicorn
+django-heroku
+whitenoise

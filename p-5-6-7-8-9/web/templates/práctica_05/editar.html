@@ -1,0 +1,9 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block content %}
+    <h2>Editar elemento</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Editar</button>
+    </form>
+{% endblock %}

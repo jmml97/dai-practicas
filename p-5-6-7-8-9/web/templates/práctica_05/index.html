@@ -1,0 +1,33 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block content %}
+<div class="hero hero-sm bg-white">
+  <div class="toast toast-warning" id="toast">
+    <button class="btn btn-clear float-right" id="delete-toast"></button>
+    Esta página web es nueva y está en BETA. Puede que contenga errores.
+  </div>
+  <div class="hero-body">
+    <h1>¡Hola!</h1>
+    <p>Bienvenido a la página de inicio de las prácticas de DAI en Django.</p>
+
+    {% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }}</p>
+    {% else %}
+    <p>Disfruta de todas las funciones iniciando sesión.</p>
+    <a href="{% url 'account_signup' %}" class="btn btn-primary">Regístrate</a>
+    <a href="{% url 'account_login' %}" class="btn">Inicia sesión</a>
+    {% endif %}
+
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+$('#delete-toast').on('click', function(e) { 
+  $('#toast').fadeOut(300, function() { 
+      $('#toast').remove(); 
+  }); 
+})
+{% endblock %}

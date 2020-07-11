@@ -1,0 +1,13 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block content %}
+    <h2>Nuevo elemento</h2>
+    {% if user.is_authenticated %}
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Añadir</button>
+    </form>
+    {% else %}
+    <p>Necesitas <a href="{% url 'account_login' %}">iniciar sesión</a> para añadir un nuevo elemento</p>
+    {% endif %}
+{% endblock %}

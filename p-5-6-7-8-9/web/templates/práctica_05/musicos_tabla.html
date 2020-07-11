@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Grupo</th>
+      <th>Fecha de nacimiento</th>
+      <th>Instrumento</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for musico in musicos %}
+    <tr>
+      <td>{{ musico.nombre }}</td>
+      <td>{{ musico.grupo }}</td>
+      <td>{{ musico.fecha_nacimiento }}</td>
+      <td>{{ musico.instrumento }}</td>
+      <td><a href="{% url 'musico_editar' pk=musico.pk %}">Editar</a> <a href="{% url 'musico_borrar' pk=musico.pk %}" onclick="return confirm('¿Seguro de que quieres borrar?')">Borrar</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

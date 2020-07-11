@@ -1,0 +1,64 @@
+{% load static %}
+<html>
+
+  <head>
+    <title>Práctica 05</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'spectre.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    {% block head %}
+    {% endblock %}
+  </head>
+
+  <body class="container grid-lg">
+    <header class="navbar mt-2">
+      <section class="navbar-section">
+        <a href="{% url 'index' %}" class="navbar-brand mr-2">DAI</a>
+        <a href="{% url 'grupo_lista' %}" class="btn btn-link">Grupos</a>
+        <a href="{% url 'album_lista' %}" class="btn btn-link">Álbumes</a>
+        <a href="{% url 'musico_lista' %}" class="btn btn-link">Músicos</a>
+        <a href="{% url 'estadisticas' %}" class="btn btn-link">Estadísticas</a>
+      </section>
+      <section class="navbar-section">
+        <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round"></div>
+        </label>
+        <em>Modo noche</em>
+      </section>
+      <section class="navbar-section">
+        {% if user.is_authenticated %}
+        <span>Bienvenido, {{ user.username }} <a href="{% url 'account_logout' %}" class="btn btn-link">Cerrar sesión</a></span>
+        {% else %}
+        <a href="{% url 'account_login' %}" class="btn">Inicia sesión</a>
+        {% endif %}
+      </section>
+    </header>
+    <br>
+    {% block content %}
+    {% endblock %}
+    <footer class="mt-2">
+      <p>© José María Martín Luque</p>
+    </footer>
+  </body>
+
+  <script>
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+
+    function switchTheme(e) {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }    
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    {% block script %}
+    {% endblock %}
+  </script>
+
+</html>

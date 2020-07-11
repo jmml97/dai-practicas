@@ -1,0 +1,115 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block content %}
+<div class="columns mt-2">
+  <div class="column col-2 col-xs-12"><h2 class="">Álbumes</h2></div>
+  {% if user.is_authenticated %}
+  <div class="column col-10 col-xs-12"><a class="btn ml-1" href="{% url 'album_nuevo' %}">Añadir un álbum</a></div>
+  {% endif %}
+  
+  <div class="column col-12" id="tabla-albumes">
+  </div>
+  
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a id="link-anterior" href="javascript:void(0);" data-page="1">Anterior</a>
+    </li>
+
+    <li class="page-item">
+      <span id="pagina-de"></span>
+    </li>
+    
+    <li class="page-item">
+      <a id="link-siguiente" href="javascript:void(0);" data-page="2">Siguiente</a>
+    </li>  
+  </ul>
+</div>
+{% endblock %}
+
+{% block script %}
+
+function Visualiza_datos(albumes) {
+  // console.log(albumes)
+  $('#tabla-albumes').html(albumes.albumes_html);
+  $('#pagina-de').html('Página ' + albumes.page + ' de ' + albumes.num_pages);
+};
+
+  $(function () {
+    // de  jquery, se ejecuta cuando se carga la página
+    $.ajax({
+      url: "{% url 'album_datos' %}",
+      type: 'get',
+      data: {
+        pagina: 1,
+      },
+      success: function (albumes) {
+        Visualiza_datos(albumes);
+      },
+      failure: function (albumes) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+
+  $('#link-siguiente').on('click', function() {
+    var link = $(this);
+    var link_anterior = $('#link-anterior')
+    var page = link.data('page');
+    $.ajax({
+      url: "{% url 'grupo_datos' %}",
+      type: 'get',
+      data: {
+        'pagina': page,
+      },
+      success: function(albumes) {
+
+        link_anterior.data('page', page-1)
+
+        if (link_anterior.parent().hasClass('disabled')) {
+          link_anterior.parent().removeClass('disabled');
+        }
+
+        if (albumes.has_next) {
+            link.data('page', page+1);
+        } else {
+          link.parent().addClass('disabled');
+        }
+        Visualiza_datos(albumes);
+      },
+      failure: function (albumes) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+
+  $('#link-anterior').on('click', function() {
+    var link = $(this);
+    var link_siguiente = $('#link-siguiente')
+    var page = link.data('page');
+    $.ajax({
+      url: "{% url 'grupo_datos' %}",
+      type: 'get',
+      data: {
+        'pagina': page,
+      },
+      success: function(albumes) {
+
+        link_siguiente.data('page', page+1)
+
+        if (link_siguiente.parent().hasClass('disabled')) {
+          link_siguiente.parent().removeClass('disabled');
+        }
+
+        if (albumes.has_previous) {
+          link.data('page', page-1);
+        } else {
+          link.parent().addClass('disabled');
+        }
+        Visualiza_datos(albumes);
+      },
+      failure: function (albumes) {
+        alert('Fallo al obtener los datos');
+      }
+    });
+  });
+{% endblock %}

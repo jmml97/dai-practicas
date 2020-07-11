@@ -1,0 +1,149 @@
+{% extends 'práctica_05/base.html' %}
+
+{% block head %}
+
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 75%;
+  }
+</style>
+
+<script>
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+  var map;
+  var service;
+  var infowindow;
+
+  function initMap() {
+
+    infowindow = new google.maps.InfoWindow();
+
+    map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: new google.maps.LatLng(0, -15)
+        });
+    
+    {% for grupo, sitio in sitios_grupos %}
+    doQuery('{{sitio}}', '{{grupo}}');
+    {% endfor %}
+  }
+
+  function doQuery(sitio, grupo) {
+    var request = {
+      query: sitio,
+      fields: ['name', 'geometry'],
+    };
+
+    service = new google.maps.places.PlacesService(map);
+
+    service.findPlaceFromQuery(request, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i], grupo);
+        }
+
+        //map.setCenter(results[0].geometry.location);
+      }
+    });
+  }
+
+  function createMarker(place, group) {
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent(place.name + ': ' + group);
+      infowindow.open(map, this);
+    });
+  }
+
+  // GRÁFICOS
+  // Instrumentos
+  document.addEventListener('DOMContentLoaded', function () {
+        var instrumentos = []
+        var datos = []
+
+        {% for instrumento, cantidad in instrumentos.items %}
+        instrumentos.push('{{instrumento}}')
+        datos.push({{cantidad}})
+        {% endfor %}
+
+        var myChart = Highcharts.chart('container-instrumentos', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Número de músicos por instrumento'
+            },
+            xAxis: {
+                categories: instrumentos
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Músicos por instrumento'
+                }
+            },
+            series: [{
+                name: 'Músicos por instrumento',
+                data: datos
+            }]
+        });
+    });
+
+  // Géneros
+  document.addEventListener('DOMContentLoaded', function () {
+        var generos = []
+        var datos = []
+
+        {% for genero, cantidad in generos.items %}
+        generos.push('{{genero}}')
+        datos.push({{cantidad}})
+        {% endfor %}
+
+        var myChart = Highcharts.chart('container-generos', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Número de grupos por género'
+            },
+            xAxis: {
+                categories: generos
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Grupos por género'
+                }
+            },
+            series: [{
+                name: 'Grupos por género',
+                data: datos
+            }]
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Estadísticas</h1>
+<br>
+<h2>Mapa de grupos</h2>
+<p>En este mapa podrás ver de dónde son los grupos de nuestra base de datos.</p>
+<div id="map"></div>
+<br>
+<h2>Instrumentos</h2>
+<div id="container-instrumentos" style="width:100%; height:400px;"></div>
+<br>
+<h2>Géneros</h2>
+<div id="container-generos" style="width:100%; height:400px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=initMap" async defer></script>
+{% endblock %}
