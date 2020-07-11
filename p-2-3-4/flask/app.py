@@ -141,6 +141,7 @@ def p3_login():
 @app.route('/p3/logout/', methods=['GET'])
 def p3_logout():
     session['email'] = ''
+    session['recent_pages'] = []
     return redirect(url_for('p3'))
 
 """-----------------------------------------------------------------------------
